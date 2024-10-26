@@ -10,7 +10,6 @@ from util.Global import ballHeading, ballDistance
 
 class HeadtrackBall(BehaviourTask):
     CLOSE_DISTANCE = 600        #in mm
-    BEHIND_ANGLE = radians(60)  # 
     DEFAULT_PITCH = radians(19)         
 
     def _reset(self):
@@ -22,7 +21,8 @@ class HeadtrackBall(BehaviourTask):
 
     def _tick(self):
         yaw = ballHeading()
-        # Set pitch based on distance to ball and angle
+        # Set pitch based on distance to ball and angle 
+        # if ball is within close distance use close pitch 
         if ballDistance() < self.CLOSE_DISTANCE:
             pitch = self.pitch_close
         else:

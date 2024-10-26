@@ -17,11 +17,11 @@ class MainHeadSkill(BehaviourTask):
         }
 
     def _reset(self):
-        self._current_sub_task = "Track"
+        self._current_sub_task = "Centre"
         self._is_first_time_scan = True
 
     def _transition(self):
         if penalised():
             self._current_sub_task = "Centre"
         else:
-            self._current_sub_task = "Centre"
+            self._current_sub_task = "Track" #start tracking after being free from penalised?

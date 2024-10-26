@@ -17,11 +17,19 @@ class MainHeadSkill(BehaviourTask):
         }
 
     def _reset(self):
-        self._current_sub_task = "Centre"
+        self._current_sub_task = "Track"
         self._is_first_time_scan = True
 
     def _transition(self):
         if penalised():
             self._current_sub_task = "Centre"
+            # Reset scan flag so it re-localizes after penalisation
+            self._is_first_time_scan = True  
         else:
-            self._current_sub_task = "Track" #start tracking after being free from penalised?
+        # If unpenalised and first-time scan, perform wide scan for localisation
+            if self._is_first_time_scan:
+                self._current_sub_task = "Localise"
+                self._is_first_time_scan = False
+            else:
+                # After the initial scan, switch to tracking the ball
+                self._current_sub_task = "Track"

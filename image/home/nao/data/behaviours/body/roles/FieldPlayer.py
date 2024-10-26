@@ -3,6 +3,7 @@ from importlib import import_module
 from util.Vector2D import Vector2D
 from BehaviourTask import BehaviourTask
 from body.skills.Stand import Stand
+from body.skills.CirclePointSpeak import CircleToPose
 from util.Constants import FIELD_LENGTH, PENALTY_AREA_LENGTH, CENTER_CIRCLE_DIAMETER, LEDColour
 
 from util.FieldGeometry import (

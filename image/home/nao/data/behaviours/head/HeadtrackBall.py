@@ -25,3 +25,4 @@ class HeadtrackBall(BehaviourTask):
 
         # Send head command with calculated yaw and pitch
         self.world.b_request.actions.head = head(yaw, pitch, False, 0.50, 0.2)
+        

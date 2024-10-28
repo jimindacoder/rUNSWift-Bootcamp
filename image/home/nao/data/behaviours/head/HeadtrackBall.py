@@ -10,23 +10,18 @@ from util.Global import ballHeading, ballDistance
 
 class HeadtrackBall(BehaviourTask):
     CLOSE_DISTANCE = 600        #in mm
-    DEFAULT_PITCH = radians(19)         
-
+    
     def _reset(self):
-        # Initialize pitch angles based on camera parameters for different situations
+        # Set default pitch angles based on camera parameters
         camera_pitch = self.world.blackboard.kinematics.parameters.cameraPitchBottom
-        self.pitch_behind = self.DEFAULT_PITCH
-        self.pitch_close = self.DEFAULT_PITCH + camera_pitch
-        self.pitch_far = self.DEFAULT_PITCH + camera_pitch
-
+        self.PITCH_BEHIND = radians(19)  # Fixed pitch when ball is behind
+        self.PITCH = radians(19 + camera_pitch) 
+    
     def _tick(self):
+        # Determine yaw (horizontal angle to ball)
         yaw = ballHeading()
-        # Set pitch based on distance to ball and angle 
-        # if ball is within close distance use close pitch 
-        if ballDistance() < self.CLOSE_DISTANCE:
-            pitch = self.pitch_close
-        else:
-            pitch = self.pitch_far
+        pitch = self.PITCH if ballDistance() < 800 else self.PITCH
+        pitch = self.PITCH_BEHIND if abs(yaw) > radians(60) else self.PITCH
 
-        # Command the head to track the ball with controlled movement speed
-        self.world.b_request.actions.head = head(yaw, pitch, is_relative=False, yaw_speed=0.50, pitch_speed=0.2)
+        # Send head command with calculated yaw and pitch
+        self.world.b_request.actions.head = head(yaw, pitch, False, 0.50, 0.2)
